@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title> 
+        etch a sketch
+    </title>
+    <style>
+        .container {
+            display: inline-block;
+            background-color: rgb(247, 247, 247);
+            margin: 10px;
+            padding: 20px;
+        }
+       
+        #containerGrid{
+            padding-left: 8em;
+            display: grid;
+            grid-template-rows: repeat(var(--grid-rows),1em);
+            grid-template-columns: repeat(var(--grid-cols),1em);
+        }
+        grid-item:hover {
+            background-color: violet;
+        }
+        .grid-item {
+            border: 1px solid rgb(228, 227, 227);
+        }
+
+
+    </style>
+    </head>
+    <body>
+        <div id = "container">
+        <h3>grid</h3>       
+        </select>
+        <button class = "goButton" onclick="makeGrid(16,16),$(cell)"> start </button>
+
+        </div>
+        <div id="containerGrid">
+        </div>
+        <script>
+            
+            const container = document.getElementById("containerGrid");
+                
+            let rows = 0;
+            let cols = 0;
+
+            function makeGrid(rows, cols) {
+                
+                container.style.setProperty('--grid-rows', rows);
+                container.style.setProperty('--grid-cols', cols);
+
+                for (i = 0; i < (rows * cols); i++) {
+                    let cell = document.createElement("div");
+                    cell.setAttribute('id', 'grid-item');
+                    cell.style.backgroundColor = '#f4f4f4';
+                    container.appendChild(cell).className = "grid-item";
+                 };
+
+            };
+            makeGrid(cell);
+            let $ = cell;
+            $(".grid-item").on("mouseover", function () {
+                cell.style.backgroundColor = '#005000' ;
+            });
+        
+        </script>
+    </body>
+
+
+
+</html>
