@@ -5,64 +5,184 @@
         etch a sketch
     </title>
     <style>
+
+        .background{
+            margin : 1em;
+            padding : 2em;
+            height: 1500px;
+            background-color: rgb(255, 163, 130);
+            box-shadow: rgb(161, 160, 160);
+            
+        }
         .container {
             display: inline-block;
-            background-color: rgb(247, 247, 247);
             margin: 10px;
             padding: 20px;
+
         }
-       
+        .ui{
+            padding-bottom: 20px;
+        }
+        .title{
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 22px;
+            text-transform: uppercase;
+        }
+        .selectorTitle{
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;
+            padding: 2px 4px;
+            display: inline-block;
+
+        }
+        .gridSize{
+            font-size: 16px;
+            padding: 2px 6px;
+        }
+        .colorSelect{
+            font-size: 16px;
+            padding: 2px 6px;
+        }
+        .button{
+            font-size: 16px;
+            color:white;
+            padding: 3px 8px;
+            background-color: rgb(255, 80, 80);
+            border-radius: 5px;
+            border-style: none;
+        }
+        .button:disabled{
+            background-color: rgb(255, 185, 185);
+
+        }
         #containerGrid{
+        
             padding-left: 8em;
             display: grid;
             grid-template-rows: repeat(var(--grid-rows),1em);
             grid-template-columns: repeat(var(--grid-cols),1em);
         }
-        grid-item:hover {
-            background-color: violet;
-        }
-        .grid-item {
+
+        .cell {
             border: 1px solid rgb(228, 227, 227);
+            background-color: #f7f7f7f5;
+
         }
+        .eraseTip{
+            margin-left : 120px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: gray;
+
+        }
+       
 
 
     </style>
     </head>
-    <body>
-        <div id = "container">
-        <h3>grid</h3>       
-        </select>
-        <button class = "goButton" onclick="makeGrid(16,16),$(cell)"> start </button>
+    <body> <!--/////////////////////////////////// C S S  E N D S    H E R E \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\-->
+        <div class = "background ">
+            <div id = "container">
+                <div class = "ui">
+                <h3 class = "title" class = "h3"> Etch-a-sketch </h3> 
 
-        </div>
-        <div id="containerGrid">
-        </div>
-        <script>
-            
-            const container = document.getElementById("containerGrid");
+                <h4 class = "selectorTitle"> Select your grid size </h4>  
+
+                <select name="sizeSelect" id="gridSize" class = "gridSize">
+                    <option value="8">--select grid size--</option>
+                    <option value="0"> small </option>
+                    <option value="1"> medium </option>
+                    <option value="2"> large </option>
+                </select>
+
+                <h4 class = "selectorTitle"> select a color </h4>
+
+                <select name="colorSelect" id="colorSelect" class = "colorSelect">
+                    <option value="0"> black </option>
+                    <option value="1"> red </option>
+                    <option value="2"> blue </option>
+                    <option value="3"> hotpink </option>
+                </select>
+
+                <button class = "button" id = "goButton"  onclick = "gridMaker(rows,cols)" > Start </button>
+                <button class = "button" id = " restartButton" onclick = "restart()"> Restart </button>
+
+                <p id = "para" class = "errorPrompt"></p>
                 
-            let rows = 0;
-            let cols = 0;
+                </div>
 
-            function makeGrid(rows, cols) {
-                
-                container.style.setProperty('--grid-rows', rows);
-                container.style.setProperty('--grid-cols', cols);
-
-                for (i = 0; i < (rows * cols); i++) {
-                    let cell = document.createElement("div");
-                    cell.setAttribute('id', 'grid-item');
-                    cell.style.backgroundColor = '#f4f4f4';
-                    container.appendChild(cell).className = "grid-item";
-                 };
-
-            };
-            makeGrid(cell);
-            let $ = cell;
-            $(".grid-item").on("mouseover", function () {
-                cell.style.backgroundColor = '#005000' ;
-            });
+            </div>
+        <div id="containerGrid"></div>
         
+        </div> <!--/////////////////////////////////// J S   S T A R T S   H E R E \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\-->
+        <script>
+
+            const container = document.getElementById("containerGrid");
+            container.style.maxWidth = '50%';
+            container.style.maxHeight = '50%';
+            var rows = 0;
+            var cols = 0;
+            let cell;
+
+            function gridMaker(){
+                document.getElementById('goButton').disabled = 'disabled';
+
+                const size = document.getElementById("gridSize");
+                const selectedSize = size.value;
+                let array = ["small", "medium", "large"]
+                let index = array[selectedSize];
+                console.log("grid size selected : " + index + "( "+ selectedSize +" )" );
+                
+                if( selectedSize == 0 ){
+                    var rows = 16;
+                    var cols = 16;
+                    }else if (selectedSize == 1 ){
+                        var rows = 32;
+                        var cols = 32;
+                        }else if( selectedSize == 2 ){
+                            var rows = 48;
+                            var cols = 48;
+                        }else if( selectedSize == 8 ){
+                            var rows = 0;
+                            var cols = 0;
+                            var print = " ERROR: please select a grid size. press 'Restart' to try again.";
+                            document.getElementById("para").innerHTML = print ;
+                        }
+                    console.log(" exit type: " + typeof(rows,cols))
+                    grid(rows,cols);
+                }
+
+            
+                console.log ("at global: " +rows,cols)
+
+                function grid(rows,cols) {
+                    console.log( "makegrid values : " + rows , cols)
+                    container.style.setProperty('--grid-rows', rows);
+                    container.style.setProperty('--grid-cols', cols);
+
+                    for (i = 0; i < (rows * cols); i++) {
+                        let cell = document.createElement("div");
+                        cell.setAttribute('id', 'cell'+ i);
+                        container.appendChild(cell).className = "cell" ;
+                        cell.onmouseover = function () {changeColor(cell)};
+                        cell.onclick = function () {eraser(cell)};
+                    }
+            }
+
+            function changeColor(cell){
+                const color = document.getElementById("colorSelect");
+                const selectedColor = color.value;
+                let colorArray = ["black", "red", "blue", "hotpink"]
+                let colorIndex = colorArray[selectedColor];
+                console.log("color" + colorIndex + ", "+ selectedColor)
+                cell.style.background = colorIndex;
+            }
+            function eraser(cell){
+                cell.style.background = '#f7f7f7f5';
+            }
+            function restart(){
+                location.reload();
+
+            }
         </script>
     </body>
 
